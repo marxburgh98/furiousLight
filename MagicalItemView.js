@@ -20,17 +20,6 @@ Global functions
  * 
  */
 
-function selectItemsByType(catalog,type) {
-	var queryResult = [];
-
-	for (var i = 0, l = catalog.length; i < l; i++) {
-
-		if (catalog[i].type==type) queryResult.push(catalog[i]);
-	}
-	return queryResult;
-			
-}
-
 
 function removeItemsfromView(containerNode){
 	while (containerNode.childNodes[0]){
@@ -38,15 +27,53 @@ function removeItemsfromView(containerNode){
 	}
 }
 
+function insertDropDown(){
+	var catalogDiv = document.getElementById('catalog');
+	var headerDiv = document.createElement('div');
+	headerDiv.id= 'header';
+	catalogDiv.parentNode.insertBefore(headerDiv,catalogDiv);
+	var selectBox = new selectView(headerDiv);
+	
+	
+}
+
+function selectView(containerNode){
+	this.containerNode = containerNode;
+	console.log('containerNode:',containerNode);
+	console.log('this.containerNode:',this.containerNode);
+	var typeSelect = document.createElement('select');
+	typeSelect.id ='typeSelect';
+
+    var typeOption = document.createElement('option');
+	typeOption.value = '0';
+	typeOption.appendChild(document.createTextNode('Select from the list..'));
+	typeSelect.appendChild(typeOption);
+//	for (var i = 0, l = characterTypes.length;i<l;i++) {
+for (var character in characterItems) {
+
+		var typeOption = document.createElement('option');
+		typeOption.value = character;
+		typeOption.appendChild(document.createTextNode(character));
+		typeSelect.appendChild(typeOption);
+	}
+
+	this.containerNode.appendChild(typeSelect);
+
+
+	document.getElementById('typeSelect').onchange = function(){
+		var chosenOption = this.options[this.selectedIndex];
+		buildCatalog(chosenOption.value);
+		
+		
+	};
+
+}
+
+
+
 function MagicalTypeView(containerNode, type){
 	//the containing node (div) to which this magical item view should be added
 	this.containerNode = containerNode;
-
- //             document.getElementById('colorSelect').onchange = function() {
-  //            var chosenOption = this.options[this.selectedIndex];            
-//				var colorDiv = document.getElementById('colorDiv');
-	//			colorDiv.style.backgroundColor = chosenOption.value;        
-
 
 	var typeH3 = document.createElement('h3');
 	typeH3.id = 'catalogType';
@@ -54,70 +81,10 @@ function MagicalTypeView(containerNode, type){
 	var itemType = document.createTextNode(type);
 	typeH3.appendChild(itemType);
 
-	var typeSelect = document.createElement('select');
-	typeSelect.id ='typeSelect';
-
-
-	for (var i = 0, l = characterTypes.length;i<l;i++) {
-		var typeOption = document.createElement('option');
-		typeOption.value = characterTypes[i];
-		typeOption.appendChild(document.createTextNode(characterTypes[i]));
-		typeSelect.appendChild(typeOption);
-	}
-
-	this.containerNode.appendChild(typeSelect);
-
-
-
-
-
-
-
-
-
-	
-
-	
-	var linkType = document.createElement('a');
-	linkType.onclick = function(){
-		buildCatalog('wizard');
-	};
-	var linkTextNode = document.createTextNode('wizard');
-	linkType.href='javascript://';
-	linkType.appendChild(linkTextNode);
-	this.containerNode.appendChild(linkType);
-	
-	var spacerNode = document.createTextNode('  ');
-	this.containerNode.appendChild(spacerNode);
-	
-	var linkType2 = document.createElement('a');
-	linkType2.onclick = function(){
-		buildCatalog('dwarf');
-	};
-	var linkTextNode2 = document.createTextNode('dwarf');
-	linkType2.href='javascript://';
-	linkType2.appendChild(linkTextNode2);
-	this.containerNode.appendChild(linkType2);
-	
-	
-
-	this.containerNode.appendChild(spacerNode);
-	
-	var linkType3 = document.createElement('a');
-	linkType3.onclick = function(){
-		buildCatalog('hobbit');
-	};
-	var linkTextNode3 = document.createTextNode('hobbit');
-	linkType3.href='javascript://';
-	linkType3.appendChild(linkTextNode3);
-	this.containerNode.appendChild(linkType3);
 }
 		
 	
 	
-	
-
-
  function MagicalItemView(containerNode, itemModel) {
  
   

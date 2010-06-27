@@ -28,25 +28,37 @@ function ShoppingCart() {
 	}
 	this.removeItem = function (item) {
 // Problem: getItem Row will break any time.  We want it to only match.
-// To remove items has to restructure the form appearance.
+
 		var cartItemsDiv = document.getElementById('CartItems');
+		removeItemsfromView(cartItemsDiv);
+
 		
-		for (var i = 0, l = ShopCart.items.length; i < l; i++) {
-				var item = magicalItems[i];
-					var viewItem = new MagicalItemView(catalogDiv, item);
-					viewItem.draw();		
-				}	
-
-
+	this.totalCost -= item.price;
 
 
 		var j = getItemRow(ShopCart,item.name);
 	
 		ShopCart.items.splice(j,1);
-		console.log('Removed items ',ShopCart.items);
 		
+
 		
+			for (var i = 0, l = ShopCart.items.length; i < l; i++) {
+		var item = ShopCart.items[i];
+		var CartView = new ShoppingCartView(cartItemsDiv,item);
+		CartView.drawItem();
+
+				}	
+		var cartDiv = document.getElementById('cart');
+	
+			var footerDiv = document.getElementById('cartFooter');
+			cartDiv.removeChild(footerDiv);
 		
+			drawFooter(cartDiv,this.totalCost);
+
+		
+		if (this.totalCost == 0) {
+						cartDiv.parentNode.removeChild(cartDiv);
+		}
 		
 		
 		

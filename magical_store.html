@@ -78,8 +78,7 @@
 
         <script>
         	
-			var characterTypes= [];
-			characterTypes()
+	
 			
             var magicalItems = [];
     
@@ -117,6 +116,7 @@
 			characterItems['wizard'] = [item1, item2];
 			characterItems['dwarf']= [item1];
 			characterItems['hobbit']=[item3];
+			characterItems['dracula']=[item1, item2,item3];
 	
 			
 			
@@ -139,7 +139,8 @@
 			
 			
 			
-			window.onload = function(){buildCatalog('dwarf');};
+			window.onload = function(){insertDropDown();};
+			
         </script>
         
 	</head>
@@ -147,6 +148,7 @@
 	    <h1>Magical Store</h1>
         <hr />
         <h2>Catalog</h2>
+
 	    <div id="catalog"></div>
 
 	</body>
