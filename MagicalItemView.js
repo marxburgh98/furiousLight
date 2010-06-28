@@ -78,7 +78,11 @@ function buildCatalog(containerNode,ctype){
 
 
 		
-	
+/**
+ * Bulky  function that fits onload.
+ * @param {Object} containerNode
+ * @param {Object} itemModel
+ */*/	
 	
  function MagicalItemView(containerNode, itemModel) {
  
@@ -89,7 +93,7 @@ function buildCatalog(containerNode,ctype){
  
      this.drawSingle = function() {
      	var item = this.magicalItem;
-
+		/**Is this an object? new or no new?*/
 		var itemDiv = buildDiv(this.containerNode,'catalogItem');
 		var nameDiv = buildDiv(itemDiv,'catalogItemName',item.name);
 		var descriptionDiv = buildDiv(itemDiv,'catalogItemDescription',item.description);
@@ -117,10 +121,13 @@ function buildCatalog(containerNode,ctype){
 	
 		// Enter values based on character items array.
 		for (var character in magicalStoreApp.characterItems) {
-			var typeOption = document.createElement('option');
-			typeOption.value = character;
-			typeOption.appendChild(document.createTextNode(character));
-			typeSelect.appendChild(typeOption);
+			if (character!='indexOf'){			//IE Bug Fix Part II
+				var typeOption = document.createElement('option');
+				typeOption.value = character;
+				typeOption.appendChild(document.createTextNode(character));
+				typeSelect.appendChild(typeOption);
+			}
+
 		}
 		var me = this
 		// Call buildCatalog on selectBox operation.

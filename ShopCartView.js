@@ -1,38 +1,35 @@
 /**
  * @author Mark Anthony
  */
-function cartCreation(){
-	var cartDiv = document.createElement('div');
-	cartDiv.id = 'cart';
-	document.body.appendChild(cartDiv);		
 
-	var headingDiv = document.createElement('div');
-	headingDiv.id = 'cartHeading';
-	cartDiv.appendChild(headingDiv);
+
+function buildDivId (containerNode,varDivId,varTextNode){
+ 	
+	var varDiv = document.createElement('div');
+	if (varDivId)	varDiv.id =varDivId;
+	if (varTextNode) {
+		var varLabel = document.createTextNode(varTextNode);
+		varDiv.appendChild(varLabel);
+	}
+	containerNode.appendChild(varDiv);
+	return varDiv;
 	
-	var nameDiv = document.createElement('div');
-	nameDiv.id ='cartItemNameHeading';
-	var nameLabel = document.createTextNode('Item Name');
-	nameDiv.appendChild(nameLabel);
-	headingDiv.appendChild(nameDiv);
+ }
 
-	var priceDiv = document.createElement('div');
-	priceDiv.id ='cartPriceHeading';
-	var priceLabel = document.createTextNode('Price');
-	priceDiv.appendChild(priceLabel);	
-	headingDiv.appendChild(priceDiv);
-
-	var itemsDiv = document.createElement('div');
-	itemsDiv.id = 'CartItems';
-	cartDiv.appendChild(itemsDiv);	
+//Creates Cart HTML. Returns cartDiv
+function cartCreation(){
+	
+	var cartDiv = buildDivId(document.body,'cart');
+	var headingDiv = buildDivId(cartDiv,'cartHeading');
+	var nameDiv = buildDivId(headingDiv,'cartItemNameHeading','Item Name');
+	var priceDiv = buildDivId(headingDiv,'cartPriceHeading','Price');
+	var itemsDiv = buildDivId(cartDiv,'CartItems');
 	return cartDiv;	
 				
 }
 
 
-
-
-
+//Inserts individual item into cart.
 function ShoppingCartView(containerNode,cartItem) {
 	// Get item from shopping cart.
 
@@ -44,29 +41,15 @@ function ShoppingCartView(containerNode,cartItem) {
 
 		var item = this.cartItem;
 		//create my DOM nodes and add them to the container
-		var itemDiv = document.createElement('div');
-		itemDiv.className = 'cartItem';
-		this.containerNode.appendChild(itemDiv);
-		
-		var nameDiv = document.createElement('div');
-		nameDiv.className = 'cartItemName';
-		nameDiv.text = item.name;
-		nameDiv.appendChild(document.createTextNode(item.name));
-		itemDiv.appendChild(nameDiv);
-		
-		var priceDiv = document.createElement('div');
-		priceDiv.className = 'cartItemPrice';
-		priceDiv.text = item.price;
-		priceDiv.appendChild(document.createTextNode(item.price));
-		itemDiv.appendChild(priceDiv);
+		itemDiv = buildDiv(this.containerNode,'cartItem');
+		nameDiv = buildDiv(itemDiv,'cartItemName',item.name)
+		priceDiv = buildDiv(itemDiv,'cartItemPrice',item.price)
 		
 		//remove Item button
 		 var button = document.createElement("button");			
 		 button.innerHTML = "Remove from Shopping Cart";
 		 itemDiv.appendChild(button); 
-		 button.onclick = function () { magicalStoreApp.ShopCart.removeItem(item);};	
-		 console.log('button',button);
-		 console.log('button.parentNode',button.parentNode);
+		 button.onclick = function () { magicalStoreApp.ShopCart.removeItem(item,button);};	
 		 //formating
 		 var clearBr = document.createElement('br');
 		 clearBr.style.clear ='both';
@@ -76,79 +59,43 @@ function ShoppingCartView(containerNode,cartItem) {
 }
 
 
-function drawFooter(containerNode,totalPrice){
-	
-	var headingDiv = document.createElement('div');
-	headingDiv.id = 'cartFooter';
-	containerNode.appendChild(headingDiv);
-	
-	var nameDiv = document.createElement('div');
-	nameDiv.id ='TotalLabel';
-	var nameLabel = document.createTextNode('Total');
-	nameDiv.appendChild(nameLabel);
-	headingDiv.appendChild(nameDiv);
+function drawFooter(containerNode,totalPrice,footerDiv){
+	if (footerDiv) containerNode.removeChild(footerDiv);
 
-	var priceDiv = document.createElement('div');
-	priceDiv.id ='TotalPrice';
-	priceDiv.appendChild(document.createTextNode(totalPrice));
-	headingDiv.appendChild(priceDiv);
-	
-	
+	var footerDiv = buildDivId(containerNode,'cartFooter');
+	var nameDiv = buildDivId(footerDiv,'TotalLabel','Total');
+	var priceDiv = buildDivId(footerDiv,'TotalPrice',totalPrice)
 }
 
 
-function ShopCartItemView (cart){
+
+/** Change Heights when certain amount of items bought */
+
+function AddItemView (cart,item){
 	var cartDiv = document.getElementById('cart');
 	var cartItemsDiv = document.getElementById('CartItems');
+	var footerDiv = document.getElementById('cartFooter');
 	
-	if (cartDiv) {
-		removeItemsfromView(cartItemsDiv);
-	}
-	else {
+	if (!cartDiv) {
 		cartDiv = cartCreation();
 		var cartItemsDiv = document.getElementById('CartItems');
-		drawFooter(cartDiv,cart.totalCost);
 	}
+	var CartView = new ShoppingCartView(cartItemsDiv, item);
+	CartView.drawItem();
+
+	var makeFooter = new drawFooter(cartDiv,cart.totalCost,footerDiv);
+
+}
+
+function RemoveItemView (cart,button){
+	var cartDiv = document.getElementById('cart');
+	var cartItemsDiv = document.getElementById('CartItems');
 	var footerDiv = document.getElementById('cartFooter');
-	if (cart.items) {		
-		for (var i = 0, l = cart.items.length; i < l; i++) {
-			var item = cart.items[i];
-			var CartView = new ShoppingCartView(cartItemsDiv, item);
-			CartView.drawItem();
-		}
-		cartDiv.removeChild(footerDiv);
-	}
-	drawFooter(cartDiv,cart.totalCost);
+	button.parentNode.parentNode.removeChild(button.parentNode);
+	
+	var makeFooter = new drawFooter(cartDiv,cart.totalCost,footerDiv);
 
 	if (cart.totalCost == 0) cartDiv.parentNode.removeChild(cartDiv);
 	
 }
 
-
-/*
-function ShopCartItemView (){
-	var cartItemsDiv = document.getElementById('CartItems');
-	var footerDiv = document.getElementById('cartFooter');
-	var cartDiv = document.getElementById('cart');
-
-	this.add = function (){
-		if (this.totalCost == 0) cartCreation();
-		if (this.totalCost == 0) drawFooter(cartDiv,this.totalCost);		
-		var CartView = new ShoppingCartView(cartItemsDiv,item);
-		CartView.drawItem();
-	}
-	
-	this.remove = function()	{
-		removeItemsfromView(cartItemsDiv);
-		for (var i = 0, l = this.items.length; i < l; i++) {
-			var item = this.items[i];
-			var CartView = new ShoppingCartView(cartItemsDiv,item);
-			CartView.drawItem();
-		}	
-	}
-	
-	if (this.totalCost > 0) cartDiv.removeChild(footerDiv);
-	drawFooter(cartDiv,this.totalCost);
-	if (this.totalCost == 0) cartDiv.parentNode.removeChild(cartDiv);
-	
-}*/
