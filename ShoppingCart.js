@@ -4,77 +4,39 @@ function ShoppingCart() {
 	this.items = new Array();
 	this.totalCost = 0;
     var me = this;            
-	this.addItem = function(item ) {
-		if (this.totalCost == 0) cartCreation();
-		var cartDiv = document.getElementById('cart');
-		if (this.totalCost == 0) drawFooter(cartDiv,this.totalCost);		
-//TODO: add ability to add more than one of an item
-		//add the item to the array
-		this.items.push(item);
-		this.totalCost += item.price;
-	
+	this.addItem = function(item ) {  // TODO: add ability to add more than one of an item
+	//add the item to the array
+	this.items.push(item);
+	this.totalCost += item.price;
 
-
-		var cartItemsDiv = document.getElementById('CartItems');
-		var CartView = new ShoppingCartView(cartItemsDiv,item);
-		CartView.drawItem();
-		if (this.totalCost > 0) {
-			var footerDiv = document.getElementById('cartFooter');
-			cartDiv.removeChild(footerDiv);
-		}
-			drawFooter(cartDiv,this.totalCost);
-			console.log('Addeditems ',ShopCart.items);		
-		
+ //console.log('Addeditems ',this.items);	
+ 		
+	var booly = new ShopCartItemView(me);
 	}
 	this.removeItem = function (item) {
-// Problem: getItem Row will break any time.  We want it to only match.
+		// Problem: getItem Row will break any time.  We want it to only match.
 
-		var cartItemsDiv = document.getElementById('CartItems');
-		removeItemsfromView(cartItemsDiv);
-
-		
-	this.totalCost -= item.price;
-
-
-		var j = getItemRow(ShopCart,item.name);
-	
-		ShopCart.items.splice(j,1);
-		
-
-		
-			for (var i = 0, l = ShopCart.items.length; i < l; i++) {
-		var item = ShopCart.items[i];
-		var CartView = new ShoppingCartView(cartItemsDiv,item);
-		CartView.drawItem();
-
-				}	
-		var cartDiv = document.getElementById('cart');
-	
-			var footerDiv = document.getElementById('cartFooter');
-			cartDiv.removeChild(footerDiv);
-		
-			drawFooter(cartDiv,this.totalCost);
-
-		
-		if (this.totalCost == 0) {
-						cartDiv.parentNode.removeChild(cartDiv);
-		}
-		
-		
-		
-		
-		
-		
+		this.items.splice(this.items.indexOf(item),1);
+		this.totalCost -= item.price;		
+	var booly =	new ShopCartItemView(me);
 	}
              
 	this.getTotalCost = function() {
          return this.totalCost;
 	}
+	
 }
 
+function findIndexes(array,element) {
+	var foundItems = [];
+	var index = array.indexOf(element)
+	while (index != -1) {
+	  foundItems.push(index);
+	  index = array.indexOf(element, ++index);
+	}
+	return foundItems;
 
-
-
+}
 
 
 

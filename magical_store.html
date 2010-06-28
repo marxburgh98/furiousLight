@@ -77,69 +77,55 @@
     </style>
 
         <script>
-        	
-	
-			
-            var magicalItems = [];
-    
-            var item1 = new MagicalItem();
-            item1.name = 'Magic Wand';
-            item1.price = 25;
-			item1.type = 'a';
-            item1.description = 'Used to channel and amplify energy. Very useful in spell casting.';
-            item1.hitPoints = 100;
-            item1.mana = 100;
-            item1.kilos = .2;
-            magicalItems.push(item1);
-    
-            var item2 = new MagicalItem();
-            item2.name = 'Funny Hat';
-            item2.price = 12;
-			item2.type = 'a';
-            item2.description = 'Funny hat provides an excellent disguise. You will not be recognized or remembered by anyone if you wear this hat!';
-            item2.hitPoints = 10;
-            item2.mana = 10;
-            item2.kilos = .3;
-            magicalItems.push(item2);
-    
-            var item3 = new MagicalItem();
-            item3.name = 'Sun Glasses';
-            item3.price = 12;
- 			item3.type = 'b';
-            item3.description = 'Not just to keep the sun from your eyes, these glasses give you x-ray vision!';
-            item3.hitPoints = 20;
-            item3.mana = 10;
-            item3.kilos = .1;
-            magicalItems.push(item3);
-            
-			var characterItems = new Array();
-			characterItems['wizard'] = [item1, item2];
-			characterItems['dwarf']= [item1];
-			characterItems['hobbit']=[item3];
-			characterItems['dracula']=[item1, item2,item3];
-	
-			
-			
+        	var magicalStoreApp = {     
 
-			
-			var ShopCart= new ShoppingCart();
+				 characterItems: [],       
 
-            function buildCatalog(ctype){
-				var catalogDiv = document.getElementById('catalog');
-				removeItemsfromView(catalogDiv);
-				var viewItemHeader = new MagicalTypeView(catalogDiv,ctype);
-				//Call function to sort Items By Type
+				 itemDefine: function(){  //Container Class
 
-				for (var i = 0, l = characterItems[ctype].length; i < l; i++) {
-					var item = characterItems[ctype][i];
-					var viewItem = new MagicalItemView(catalogDiv, item);
-					viewItem.draw();		
-				}	
+					var item1 = new MagicalItem();
+		            item1.name = 'Magic Wand';
+		            item1.price = 25;
+					item1.type = 'a';
+		            item1.description = 'Used to channel and amplify energy. Very useful in spell casting.';
+		            item1.hitPoints = 100;
+		            item1.mana = 100;
+		            item1.kilos = .2;
+		
+					var item2 = new MagicalItem();
+		            item2.name = 'Funny Hat';
+		            item2.price = 12;
+					item2.type = 'a';
+		            item2.description = 'Funny hat provides an excellent disguise. You will not be recognized or remembered by anyone if you wear this hat!';
+		            item2.hitPoints = 10;
+		            item2.mana = 10;
+		            item2.kilos = .3;
+					    
+		            var item3 = new MagicalItem();
+		            item3.name = 'Sun Glasses';
+		            item3.price = 12;
+		 			item3.type = 'b';
+		            item3.description = 'Not just to keep the sun from your eyes, these glasses give you x-ray vision!';
+		            item3.hitPoints = 20;
+		            item3.mana = 10;
+		            item3.kilos = .1;
+
+
+					magicalStoreApp.characterItems['wizard'] = [item1, item2];
+					magicalStoreApp.characterItems['dwarf']= [item1];
+					magicalStoreApp.characterItems['hobbit']=[item3];
+					magicalStoreApp.characterItems['dracula']=[item1, item2,item3];	
+					
+				},
+
+				ShopCart: new ShoppingCart()
 			}
-			
-			
-			
-			window.onload = function(){insertDropDown();};
+
+			window.onload = function(){
+				magicalStoreApp.itemDefine(); 
+				var catalogDiv = document.getElementById('catalog');
+				var dropDown = new MagicalItemView(catalogDiv,'').DropDown(); 
+			}
 			
         </script>
         

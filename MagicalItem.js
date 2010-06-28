@@ -24,7 +24,5 @@ function MagicalItem() {
             this.mana += numManaPoints;
         }
         
-//                    this.mana += numManaPoints;
-//                    this.isPuffOfSmoke = false;
     }
 }
