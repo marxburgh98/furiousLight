@@ -29,7 +29,7 @@ function removeItemsfromView(containerNode){
 
  //Ideas: buildHTML
  
- function buildDiv (containerNode,/*varDivId,*/varClassName,varTextNode){
+function buildDiv (containerNode,/*varDivId,*/varClassName,varTextNode){
  	
 	var varDiv = document.createElement('div');
 //	if (varDivId)	varDiv.id =varDivId;
@@ -79,75 +79,75 @@ function buildCatalog(containerNode,ctype){
 
 		
 /**
- * Bulky  function that fits onload.
+ * Bulky  function 
  * @param {Object} containerNode
  * @param {Object} itemModel
- */*/	
+ */
 	
- function MagicalItemView(containerNode, itemModel) {
+ function MagicalItemView(containerNode, itemModel){
  
-  
-     //the containing node (div) to which this magical item view should be added
-     this.containerNode = containerNode;
-     this.magicalItem = itemModel;   
  
-     this.drawSingle = function() {
-     	var item = this.magicalItem;
+ 	//the containing node (div) to which this magical item view should be added
+	this.containerNode = containerNode;
+	this.magicalItem = itemModel;
+	
+	this.drawSingle = function(){
+		var item = this.magicalItem;
 		/**Is this an object? new or no new?*/
-		var itemDiv = buildDiv(this.containerNode,'catalogItem');
-		var nameDiv = buildDiv(itemDiv,'catalogItemName',item.name);
-		var descriptionDiv = buildDiv(itemDiv,'catalogItemDescription',item.description);
-		var priceDiv = buildDiv(itemDiv,'catalogItemPrice','Price: $'+item.price);
-
+		var itemDiv = buildDiv(this.containerNode, 'catalogItem');
+		var nameDiv = buildDiv(itemDiv, 'catalogItemName', item.name);
+		var descriptionDiv = buildDiv(itemDiv, 'catalogItemDescription', item.description);
+		var priceDiv = buildDiv(itemDiv, 'catalogItemPrice', 'Price: $' + item.price);
+		
 		//Button adds to Shopping Cart
-		var button = document.createElement("button");			
+		var button = document.createElement("button");
 		button.innerHTML = "Add 1 to Shopping Cart";
-		itemDiv.appendChild(button); 
-		button.onclick = function () {magicalStoreApp.ShopCart.addItem(item); };	 	 
-     }
-
-
-// On Load Function. Inserts Character DropDown. 
-	this.DropDown = function(){
-
-		var typeSelect = document.createElement('select');
-		typeSelect.id ='typeSelect';
+		itemDiv.appendChild(button);
+		button.onclick = function(){
+			magicalStoreApp.ShopCart.addItem(item);
+		};
+	}
 	
+	
+	// On Load Function. Inserts Character DropDown. 
+	this.DropDown = function(){
+	
+		var typeSelect = document.createElement('select');
+		typeSelect.id = 'typeSelect';
+		
 		// Null Value Intro
-	    var typeOption = document.createElement('option');
+		var typeOption = document.createElement('option');
 		typeOption.value = '0';
 		typeOption.appendChild(document.createTextNode('Select from the list..'));
 		typeSelect.appendChild(typeOption);
-	
+		
 		// Enter values based on character items array.
 		for (var character in magicalStoreApp.characterItems) {
-			if (character!='indexOf'){			//IE Bug Fix Part II
+			if (character != 'indexOf') { //IE Bug Fix Part II
 				var typeOption = document.createElement('option');
 				typeOption.value = character;
 				typeOption.appendChild(document.createTextNode(character));
 				typeSelect.appendChild(typeOption);
 			}
-
+			
 		}
 		var me = this
 		// Call buildCatalog on selectBox operation.
 		typeSelect.onchange = function(){
 			var chosenOption = this.options[this.selectedIndex];
-			buildCatalog(me.containerNode,chosenOption.value);
+			buildCatalog(me.containerNode, chosenOption.value);
 		}
 		
 		// Insert into Document
 		var headerDiv = document.createElement('div');
-		headerDiv.id= 'header';
-		this.containerNode.parentNode.insertBefore(headerDiv,this.containerNode);
+		headerDiv.id = 'header';
+		this.containerNode.parentNode.insertBefore(headerDiv, this.containerNode);
 		headerDiv.appendChild(typeSelect);
-
-	
 		
-	}
-	
- }
- 
+		
+		
+	}	
+}
 
  
 
