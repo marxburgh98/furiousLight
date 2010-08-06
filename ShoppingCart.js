@@ -7,16 +7,15 @@ function ShoppingCart() {
 	this.addItem = function(item ) {  // TODO: add ability to add more than one of an item
 		//add the item to the array
 		this.items.push(item);
-		this.totalCost += item.price;
-		//console.log('Addeditems ',this.items);			
-		var addThisItem = new AddItemView(me,item);
+		this.totalCost += item.price * 1;
+		
+
 	}
 	
 	this.removeItem = function (item,button) {
 		this.items.splice(this.items.indexOf(item),1);
 		this.totalCost -= item.price;	
-		// Notice: Array is not row for row with DOM.	
-		var removeThisItem =	new RemoveItemView(me,button);
+
 	}
              
 	this.getTotalCost = function() {

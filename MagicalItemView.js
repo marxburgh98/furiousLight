@@ -154,4 +154,14 @@ function buildCatalog(containerNode,ctype){
  
  
  
+function buildIt (){
+ 	var catalogDiv = document.getElementById('catalog');
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  

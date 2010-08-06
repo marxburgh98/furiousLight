@@ -11,7 +11,6 @@
         
         <script type="text/javascript" src="MagicalItem.js"></script>
 		<script type="text/javascript" src="ShoppingCart.js"></script>
-		<script type="text/javascript" src="ShopCartView.js"></script>
 	</head>
 
     <script type="text/javascript">
