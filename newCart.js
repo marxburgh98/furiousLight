@@ -2,7 +2,6 @@
  * @author markH
  */
 var magicalStoreApp = {
-    magicalItems: [],
     characterItems: [],
     ShopCart: new ShoppingCart()
 }
@@ -12,8 +11,8 @@ window.onload = function(){
     initStuff();
 }
 
-function starter(){
-    var items = magicalStoreApp.magicalItems;
+function starter(allItems){
+ 	var items = allItems;
     magicalStoreApp.characterItems['wizard'] = [items[0], items[1]];
     magicalStoreApp.characterItems['dwarf'] = [items[0]];
     magicalStoreApp.characterItems['hobbit'] = [items[2]];

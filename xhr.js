@@ -68,6 +68,9 @@ function xmlParser(){
 
 	var catalog = this.xmlGot.responseXML.childNodes;
 	
+	var allItems = [];
+	
+	
 	var itemsLevel = catalog[0].childNodes;  //fill this guy
 	for (var i=0,l=itemsLevel.length ;i<l;i++) {
 		var itemNode=itemsLevel[i];
@@ -82,10 +85,11 @@ function xmlParser(){
 					//item is an array.	
 				}
 			}
-			magicalStoreApp.magicalItems.push(item);
+			allItems.push(item);
+
 	    }
 	 }
-	starter();
+	starter(allItems);
 //	console.log('items',magicalStoreApp.magicalItems)
 
 
