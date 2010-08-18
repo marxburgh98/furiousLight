@@ -4,7 +4,7 @@
 var magicalStoreApp = {
     magicalItems: [],
     characterItems: [],
-    //	ShopCart: new ShoppingCart()
+    ShopCart: new ShoppingCart()
 }
 
 
@@ -50,30 +50,43 @@ MagicalItemView.prototype = {
         var nameDiv = this.buildDiv(itemDiv, 'catalogItemName', item.name);
         var descriptionDiv = this.buildDiv(itemDiv, 'catalogItemDescription', item.description);
         var priceDiv = this.buildDiv(itemDiv, 'catalogItemPrice', 'Price: $' + item.price);
-        
+
         //Button adds to Shopping Cart
         var button = document.createElement("button");         
         if (this.inCart) {
 			// Cart Item Views Button Functionality
         	button.innerHTML = "Remove from Shopping Cart";
 			button.onclick = function() {
-				
+				magicalStoreApp.ShopCart.removeItem(item);
+				if (magicalStoreApp.ShopCart.totalCost==0) {
+					itemDiv.parentNode.parentNode.parentNode.removeChild(itemDiv.parentNode.parentNode);
+				}
+				else {
+					itemDiv.parentNode.removeChild(itemDiv);
+	                var footerDiv = document.getElementById('cartFooter');				
+	                me.drawFooter(footerDiv, magicalStoreApp.ShopCart.totalCost);
+
+					
+										
+				}
 			}
         }
         else {
 			// Store Views Button Functionality
             button.innerHTML = "Add 1 to Shopping Cart";
             button.onclick = function(){   
-	   		//	magicalStoreApp.ShopCart.addItem(item);
+	   			magicalStoreApp.ShopCart.addItem(item);
 				var cartDiv = document.getElementById('cart');
                 if (!cartDiv) {	cartDiv = me.cartCreation();}
 				else {	}
 				var cartItemsDiv = document.getElementById('CartItems');
-                var footerDiv = document.getElementById('cartFooter');
                 var cartViewItem = new MagicalItemView(cartItemsDiv, item);
 				cartViewItem.inCart= true;
                 cartViewItem.draw();
-                me.drawFooter(footerDiv, me.totalCost);
+				
+                var footerDiv = document.getElementById('cartFooter');				
+                me.drawFooter(footerDiv, magicalStoreApp.ShopCart.totalCost);
+
             };
         }
         itemDiv.appendChild(button);
@@ -153,16 +166,13 @@ MagicalItemView.prototype = {
     },
     //Creates Cart HTML. Returns cartDiv
     cartCreation: function(){
-    
         var cartDiv = this.buildDivId(document.body, 'cart');
-        //    var headingDiv = this.buildDivId(cartDiv, 'cartHeading');
-        //    var nameDiv = this.buildDivId(headingDiv, 'cartItemNameHeading', 'Item Name');
-        //    var priceDiv = this.buildDivId(headingDiv, 'cartPriceHeading', 'Price');
         var itemsDiv = this.buildDivId(cartDiv, 'CartItems');
         var footerDiv = this.buildDivId(cartDiv, 'cartFooter');
         return cartDiv;
         
     },
+    // updates Cart footer. 
     drawFooter: function(footerDiv, totalPrice){
         var containerNode = footerDiv.parentNode;
         containerNode.removeChild(footerDiv);
